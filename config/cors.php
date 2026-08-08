@@ -5,13 +5,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // Terima semua origin localhost (port berapapun)
+    // Terima semua origin (atau batasi ke localhost saja saat dev)
     'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => [
-        '#^http://localhost(:\d+)?$#',
-        '#^http://127\.0\.0\.1(:\d+)?$#',
-    ],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 

@@ -6,11 +6,14 @@ use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\AppSettingController;
 
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 
 use App\Http\Controllers\Api\NotificationController;
+
+use App\Http\Controllers\Api\UserChatController;
 
 // ── HEALTH CHECK (untuk Render.com monitoring) ───────────────
 Route::get('/health', fn() => response()->json(['status' => 'ok', 'app' => 'MyInvoice API']));
@@ -31,9 +34,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/me',      [AuthController::class, 'updateProfile']);
     Route::put('/me/password', [AuthController::class, 'changePassword']);
 
+    // User Chat
+    Route::get('/user/chats/unread', [UserChatController::class, 'getUnreadCount']);
+    Route::get('/user/chats',        [UserChatController::class, 'getMessages']);
+    Route::post('/user/chats',       [UserChatController::class, 'sendMessage']);
+
     // Notifications (User)
     Route::get('/notifications',           [NotificationController::class, 'indexUser']);
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+
+    // App Settings
+    Route::get('/settings', [AppSettingController::class, 'index']);
 
     // Businesses
     Route::get('/businesses',              [BusinessController::class, 'index']);
@@ -77,24 +88,35 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 
         // Users
-        Route::get('/users',            [AdminController::class, 'getUsers']);
-        Route::put('/users/{id}/admin', [AdminController::class, 'toggleAdmin']);
-        Route::delete('/users/{id}',    [AdminController::class, 'deleteUser']);
+        Route::get('/users',               [AdminController::class, 'getUsers']);
+        Route::put('/users/{id}',          [AdminController::class, 'updateUser']);
+        Route::put('/users/{id}/admin',    [AdminController::class, 'toggleAdmin']);
+        Route::put('/users/{id}/block',    [AdminController::class, 'toggleBlockUser']);
+        Route::delete('/users/{id}',       [AdminController::class, 'deleteUser']);
+
+        // Admin Live Chat
+        Route::get('/chats/users',         [AdminController::class, 'getChatUsers']);
+        Route::get('/chats/{userId}',      [AdminController::class, 'getChatMessages']);
+        Route::post('/chats',              [AdminController::class, 'sendChatMessage']);
 
         // Invoices
-        Route::get('/invoices',         [AdminController::class, 'getInvoices']);
-        Route::delete('/invoices/{id}',  [AdminController::class, 'deleteInvoice']);
+        Route::get('/invoices',            [AdminController::class, 'getInvoices']);
+        Route::delete('/invoices/{id}',    [AdminController::class, 'deleteInvoice']);
 
         // Clients
-        Route::get('/clients',          [AdminController::class, 'getClients']);
-        Route::delete('/clients/{id}',   [AdminController::class, 'deleteClient']);
+        Route::get('/clients',             [AdminController::class, 'getClients']);
+        Route::delete('/clients/{id}',     [AdminController::class, 'deleteClient']);
 
         // Items
-        Route::get('/items',            [AdminController::class, 'getItems']);
-        Route::delete('/items/{id}',    [AdminController::class, 'deleteItem']);
+        Route::get('/items',               [AdminController::class, 'getItems']);
+        Route::delete('/items/{id}',       [AdminController::class, 'deleteItem']);
 
         // Businesses
-        Route::get('/businesses',       [AdminController::class, 'getBusinesses']);
+        Route::get('/businesses',          [AdminController::class, 'getBusinesses']);
+
+        // App Settings (Admin)
+        Route::get('/settings',            [AppSettingController::class, 'adminIndex']);
+        Route::post('/settings',           [AppSettingController::class, 'update']);
     });
 });
 

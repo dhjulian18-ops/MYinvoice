@@ -19,6 +19,8 @@ class Invoice extends Model {
         'shipping' => 'float',
     ];
 
+    protected $appends = ['total'];
+
     public function business() {
         return $this->belongsTo(Business::class);
     }

@@ -176,6 +176,13 @@ class AuthController extends Controller {
             ]);
         }
 
+        if ($user->is_blocked) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun Anda telah diblokir oleh administrator. Silakan hubungi dukungan.',
+            ], 403);
+        }
+
         // Hapus token lama, buat token baru
         $user->tokens()->delete();
         $token = $user->createToken('auth_token')->plainTextToken;
