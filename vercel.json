@@ -1,7 +1,6 @@
 {
     "version": 2,
     "framework": null,
-    "buildCommand": "composer install --optimize-autoloader --no-dev",
     "outputDirectory": "public",
     "functions": {
         "api/index.php": {
