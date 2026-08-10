@@ -92,12 +92,15 @@ class FcmService
                     ],
                     'android' => [
                         'priority' => 'HIGH',
+                        'direct_boot_ok' => true,
+                        'ttl' => '0s',
                         'notification' => [
                             'sound'                     => 'default',
                             'channel_id'                => 'high_importance_channel',
                             'default_sound'             => true,
                             'default_vibrate_timings'   => true,
                             'notification_priority'     => 'PRIORITY_MAX',
+                            'visibility'                => 'PUBLIC',
                         ],
                     ],
                     'data' => array_merge([
