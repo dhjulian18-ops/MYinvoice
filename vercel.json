@@ -14,8 +14,18 @@
         }
     ],
     "env": {
+        "APP_NAME": "Invoice API",
         "APP_ENV": "production",
+        "APP_KEY": "base64:esYVeS2X9kJUdefVl392HKJGKkaXRqpOPCy4xs2BSoA=",
         "APP_DEBUG": "false",
+        "DB_CONNECTION": "mysql",
+        "DB_HOST": "mysql-1ad95216-myinvoiceapp.f.aivencloud.com",
+        "DB_PORT": "23030",
+        "DB_DATABASE": "defaultdb",
+        "DB_USERNAME": "avnadmin",
+        "DB_PASSWORD_B64": "QVZOU19xazN1eU5ibDRmLXNaTllqeUh5",
+        "MYSQL_ATTR_SSL_CA": "false",
+        "FONNTE_TOKEN": "jJGHjNfEcnX5aCTx3UWw",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
