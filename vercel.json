@@ -17,7 +17,7 @@
         "APP_NAME": "Invoice API",
         "APP_ENV": "production",
         "APP_KEY": "base64:esYVeS2X9kJUdefVl392HKJGKkaXRqpOPCy4xs2BSoA=",
-        "APP_DEBUG": "false",
+        "APP_DEBUG": "true",
         "DB_CONNECTION": "mysql",
         "DB_HOST": "mysql-1ad95216-myinvoiceapp.f.aivencloud.com",
         "DB_PORT": "23030",
