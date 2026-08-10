@@ -9,6 +9,23 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    // ── USER: Update FCM Token ──────────────────────────────────
+    public function updateFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        $request->user()->update([
+            'fcm_token' => $request->fcm_token,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'FCM Token berhasil diperbarui.',
+        ]);
+    }
+
     // ── ADMIN: Kirim Pemberitahuan ─────────────────────────────
     public function send(Request $request)
     {
@@ -30,6 +47,10 @@ class NotificationController extends Controller
                 'message' => $request->message,
             ]);
             $createdCount = User::count();
+
+            // Push FCM ke semua user yang punya fcm_token
+            $fcmTokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
+            \App\Services\FcmService::broadcastPushNotification($fcmTokens, $request->title, $request->message);
         } else {
             // Target user tertentu
             $userIds = $request->user_ids ?? [];
@@ -40,13 +61,18 @@ class NotificationController extends Controller
                 ], 422);
             }
 
-            foreach ($userIds as $uId) {
+            $users = User::whereIn('id', $userIds)->get();
+            foreach ($users as $u) {
                 Notification::create([
-                    'user_id' => $uId,
+                    'user_id' => $u->id,
                     'title'   => $request->title,
                     'message' => $request->message,
                 ]);
                 $createdCount++;
+
+                if (!empty($u->fcm_token)) {
+                    \App\Services\FcmService::sendPushNotification($u->fcm_token, $request->title, $request->message);
+                }
             }
         }
 

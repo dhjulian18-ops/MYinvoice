@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Notifications (User)
     Route::get('/notifications',           [NotificationController::class, 'indexUser']);
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::post('/user/fcm-token',         [NotificationController::class, 'updateFcmToken']);
 
     // App Settings
     Route::get('/settings', [AppSettingController::class, 'index']);
